@@ -1,0 +1,19 @@
+icon_businessos.settings:
+  type: config_object
+  label: 'ICON BusinessOS settings'
+  mapping:
+    tenant_id:
+      type: string
+      label: 'Tenant ID'
+    fleet_master_url:
+      type: string
+      label: 'Fleet Master URL'
+    phone_home_interval:
+      type: integer
+      label: 'Phone home interval (minutes)'
+    silo_api_key:
+      type: string
+      label: 'Silo API key'
+    registered_at:
+      type: string
+      label: 'Registration timestamp'

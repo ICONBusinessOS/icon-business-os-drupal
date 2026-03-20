@@ -1,0 +1,4 @@
+administer icon businessos:
+  title: 'Administer ICON BusinessOS'
+  description: 'Configure the ICON BusinessOS silo connection and view fleet health data.'
+  restrict access: true

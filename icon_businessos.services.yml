@@ -1,0 +1,11 @@
+services:
+  icon_businessos.system_monitor:
+    class: Drupal\icon_businessos\Service\SystemMonitor
+  icon_businessos.security_scanner:
+    class: Drupal\icon_businessos\Service\SecurityScanner
+  icon_businessos.content_intelligence:
+    class: Drupal\icon_businessos\Service\ContentIntelligence
+    arguments: ['@entity_type.manager', '@database']
+  icon_businessos.phone_home:
+    class: Drupal\icon_businessos\Service\PhoneHome
+    arguments: ['@http_client', '@config.factory', '@icon_businessos.system_monitor', '@icon_businessos.security_scanner', '@icon_businessos.content_intelligence']

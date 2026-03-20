@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * ICON BusinessOS Silo module for Drupal.
+ *
+ * Connects this Drupal site to the ICON BusinessOS fleet master
+ * for infrastructure monitoring, security scanning, and content intelligence.
+ * Silo contract v2.3 — push+pull hybrid model.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function icon_businessos_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.icon_businessos') {
+    return '<p>' . t('Connects this Drupal site to the ICON BusinessOS fleet master for infrastructure monitoring, security scanning, and content intelligence.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Executes phone-home heartbeat push on cron run.
+ * Drupal cron should be configured to run every 5-15 minutes
+ * for timely health reporting.
+ */
+function icon_businessos_cron() {
+  $config = \Drupal::config('icon_businessos.settings');
+  $last_run = \Drupal::state()->get('icon_businessos.last_phone_home', 0);
+  $interval = ((int) $config->get('phone_home_interval') ?: 15) * 60;
+
+  if ((\Drupal::time()->getRequestTime() - $last_run) >= $interval) {
+    /** @var \Drupal\icon_businessos\Service\PhoneHome $phone_home */
+    $phone_home = \Drupal::service('icon_businessos.phone_home');
+    $phone_home->execute();
+    \Drupal::state()->set('icon_businessos.last_phone_home', \Drupal::time()->getRequestTime());
+  }
+
+  // Daily security scan
+  $last_scan = \Drupal::state()->get('icon_businessos.last_security_scan', 0);
+  if ((\Drupal::time()->getRequestTime() - $last_scan) >= 86400) {
+    /** @var \Drupal\icon_businessos\Service\SecurityScanner $scanner */
+    $scanner = \Drupal::service('icon_businessos.security_scanner');
+    $scanner->executeScan();
+    \Drupal::state()->set('icon_businessos.last_security_scan', \Drupal::time()->getRequestTime());
+  }
+}
+
+/**
+ * Implements hook_user_login_failed().
+ * Tracks failed login attempts for the security scanner.
+ */
+function icon_businessos_user_login_failed(array $credentials) {
+  $log = \Drupal::state()->get('icon_businessos.failed_logins', []);
+  $log[] = [
+    'username' => $credentials['name'] ?? 'unknown',
+    'time' => \Drupal::time()->getRequestTime(),
+    'ip' => \Drupal::request()->getClientIp(),
+  ];
+  // Keep last 500 entries
+  if (count($log) > 500) {
+    $log = array_slice($log, -500);
+  }
+  \Drupal::state()->set('icon_businessos.failed_logins', $log);
+}

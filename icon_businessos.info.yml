@@ -1,0 +1,10 @@
+name: 'ICON BusinessOS Silo'
+type: module
+description: 'Connects this Drupal site to the ICON BusinessOS fleet master for infrastructure monitoring, security scanning, and content intelligence. Silo contract v2.3.'
+package: 'ICON BusinessOS'
+core_version_requirement: ^9.4 || ^10 || ^11
+php: 8.1
+configure: icon_businessos.settings
+dependencies:
+  - drupal:rest
+  - drupal:serialization

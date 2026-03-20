@@ -1,0 +1,5 @@
+tenant_id: ''
+fleet_master_url: 'https://os.theicon.ai/api/silo'
+phone_home_interval: 15
+silo_api_key: ''
+registered_at: ''

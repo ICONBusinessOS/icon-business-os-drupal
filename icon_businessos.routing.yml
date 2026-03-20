@@ -1,0 +1,63 @@
+icon_businessos.settings:
+  path: '/admin/config/services/icon-businessos'
+  defaults:
+    _form: '\Drupal\icon_businessos\Form\SettingsForm'
+    _title: 'ICON BusinessOS Silo'
+  requirements:
+    _permission: 'administer icon businessos'
+
+icon_businessos.heartbeat:
+  path: '/api/icon/v1/heartbeat'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::heartbeat'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\icon_businessos\Controller\SiloApiController::accessCheck'
+
+icon_businessos.resources:
+  path: '/api/icon/v1/resources'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::resources'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\icon_businessos\Controller\SiloApiController::accessCheck'
+
+icon_businessos.security:
+  path: '/api/icon/v1/security'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::security'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\icon_businessos\Controller\SiloApiController::accessCheck'
+
+icon_businessos.content:
+  path: '/api/icon/v1/content'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::content'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\icon_businessos\Controller\SiloApiController::accessCheck'
+
+icon_businessos.modules:
+  path: '/api/icon/v1/modules'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::modules'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\icon_businessos\Controller\SiloApiController::accessCheck'
+
+icon_businessos.errors:
+  path: '/api/icon/v1/errors'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::errors'
+  methods: [GET]
+  requirements:
+    _custom_access: '\Drupal\icon_businessos\Controller\SiloApiController::accessCheck'
+
+icon_businessos.status:
+  path: '/api/icon/v1/status'
+  defaults:
+    _controller: '\Drupal\icon_businessos\Controller\SiloApiController::status'
+  methods: [GET]
+  requirements:
+    _access: 'TRUE'
